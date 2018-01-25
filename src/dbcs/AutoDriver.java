@@ -20,8 +20,6 @@ import java.util.regex.*;
 /**
  * Wrapped the selenium API to perform user action simulation based on information from xml config.
  *
- * @author Chenlei Hu
- * @version 0.0.1
  */
 
 public class AutoDriver {
@@ -144,6 +142,25 @@ public class AutoDriver {
         //}
         	
     }
+
+   /**
+     * Continue to click action on an element specified in the xpath attribute of xml node until another element appears
+     *
+     * @param operation the same object passed from executeOperation
+     *                  must have attribute "xpath"
+     */
+    private void executeClickUntil(HierarchicalConfiguration<ImmutableNode> operation) {
+        String xpath = operation.getString("[@xpath]") ;
+        String another_element = operation.getString("[@value]")
+        assert xpath != null;
+        By byXpath = By.xpath(another_element) ;
+
+        while (!ExpectedConditions.presenceOfElementLocated(byXpath))
+            executeClick(xpath);
+ 
+       executeClick(another_element) ;
+    }
+
 
     /**
      * Simulate a click action on an element specified in the xpath attribute of xml node
